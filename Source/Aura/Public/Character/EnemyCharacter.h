@@ -14,4 +14,5 @@ class AURA_API AEnemyCharacter : public ABaseCharacter
 {
 	GENERATED_BODY()
 	
+
 };
