@@ -1,9 +1,10 @@
 // copyright
-
-
-#include "Player/AuraPlayerController.h"
 #include"EnhancedInputSubsystems.h"
 #include"EnhancedInputComponent.h"
+#include"Character/EnemyCharacter.h"
+#include"Interact/EnemyInterface.h"
+#include "Player/AuraPlayerController.h"
+
 
 AAuraPlayerController::AAuraPlayerController()
 {
@@ -40,7 +41,62 @@ void AAuraPlayerController::SetupInputComponent()
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
 }
+void AAuraPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+	CursorTrace();
 
+}
+void AAuraPlayerController::CursorTrace()
+{
+	FHitResult CursorHit = {};
+	GetHitResultUnderCursor(ECC_Visibility,false, CursorHit);
+	if (!CursorHit.bBlockingHit) return;
+	LastActor = ThisActor; 
+	ThisActor = Cast<IEnemyInterface>(CursorHit.GetActor());
+
+	if (nullptr == ThisActor)
+	{
+		if (nullptr != LastActor)
+			LastActor->UnHighlightActor();
+	}
+	else
+	{
+		if (nullptr == LastActor)
+			ThisActor->HighlightActor();
+
+
+		else if (LastActor != ThisActor) {
+			LastActor->UnHighlightActor();
+			ThisActor->HighlightActor();
+		}
+	}
+	//LastActor == nullptr &&This Actor ==nullptr 
+	//do nth
+	//LastActor == nullptr &&This Actor == mon 1 
+	// highlight this
+	//LastActor == mon 2 &&This Actor == mon 1 
+	// UnHighlight mon2 Highlight mon1
+	//LastActor == mon 1 &&This Actor == nullptr
+	//UnHighlight mon 1 
+	//LastActor == mon 1 &&This Actor == mon 1 
+	//do nth
+
+
+
+
+
+	if (ThisActor&&true ==ThisActor->GetHighlighted())
+	{
+		FHitResult HitResult{};
+		AEnemyCharacter* pEnemy = Cast<AEnemyCharacter>(ThisActor);
+		DrawDebugSphere(GetWorld(),pEnemy->GetActorLocation(),40.F,10.F,FColor::Red,false,-1.f);
+	}
+
+
+
+
+}
 void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 {
 	const FVector2D MoveValue = InputActionValue.Get<FVector2D>();

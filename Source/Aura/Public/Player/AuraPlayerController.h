@@ -18,7 +18,9 @@ public:
 protected:
 	void BeginPlay()override;
 	void SetupInputComponent()override;
-
+public:
+	virtual void PlayerTick(float DeltaTime)override;
+	void CursorTrace();
 private:
 
 	UPROPERTY(EditAnywhere, Category= "Input")
@@ -27,7 +29,10 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<class UInputAction> MoveAction = {};
 
+	class IEnemyInterface* ThisActor = {};
+	class IEnemyInterface* LastActor = {};
 	void Move(const struct FInputActionValue& InputActionValue);
+
 
 
 };
