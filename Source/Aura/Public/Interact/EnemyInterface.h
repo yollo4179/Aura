@@ -27,4 +27,6 @@ public:
 	inline bool GetHighlighted() { return IsHighlighted; };
 protected:
 	bool IsHighlighted = { false };
+
+
 };

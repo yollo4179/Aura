@@ -21,9 +21,12 @@ void AAuraPlayerController::BeginPlay()
 
 	//자동으롷 싱글톤. 
 	UEnhancedInputLocalPlayerSubsystem* SubSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(SubSystem);
-
-	SubSystem->AddMappingContext(AuraContext, 0); //0은 우선순위. 0이 가장 높다.
+	if(nullptr != SubSystem)
+	{
+		SubSystem->AddMappingContext(AuraContext, 0); //0은 우선순위. 0이 가장 높다.
+	}
+	//LoaclPlayer만이 이값이 널이 아니므로 SubSystem에서 터지지 않고 넘어간다.
+	
 
 	//이제 이 컨트롤러는 AuraContext에 정의된 입력을 사용할 수 있다.
 	bShowMouseCursor = true;

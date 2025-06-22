@@ -24,20 +24,20 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	UPROPERTY( BlueprintReadOnly,ReplicatedUsing =OnRep_Health ,Category="Vital Attributes")
-	FGameplayAttributeData m_Health;
-	ATTRIBUTE_ACCESSORS(UMH_AttributeSet, m_Health);
+	FGameplayAttributeData Health;
+	ATTRIBUTE_ACCESSORS(UMH_AttributeSet, Health);
 
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "Vital Attributes")
-	FGameplayAttributeData m_MaxHealth;
-	ATTRIBUTE_ACCESSORS(UMH_AttributeSet, m_MaxHealth);
+	FGameplayAttributeData MaxHealth;
+	ATTRIBUTE_ACCESSORS(UMH_AttributeSet, MaxHealth);
 
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Mana, Category = "Mana Attributes")
-	FGameplayAttributeData m_Mana;
-	ATTRIBUTE_ACCESSORS(UMH_AttributeSet, m_Mana);
+	FGameplayAttributeData Mana;
+	ATTRIBUTE_ACCESSORS(UMH_AttributeSet, Mana);
 
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxMana, Category = "Mana Attributes")
-	FGameplayAttributeData m_MaxMana;
-	ATTRIBUTE_ACCESSORS(UMH_AttributeSet, m_MaxMana);
+	FGameplayAttributeData MaxMana;
+	ATTRIBUTE_ACCESSORS(UMH_AttributeSet, MaxMana);
 
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& _OldHelth)const;

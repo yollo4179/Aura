@@ -30,7 +30,7 @@ private:
 	TObjectPtr<class UInputAction> MoveAction = {};
 
 	class IEnemyInterface* ThisActor = {};
-	class IEnemyInterface* LastActor = {};
+	 IEnemyInterface* LastActor = {};
 	void Move(const struct FInputActionValue& InputActionValue);
 
 
