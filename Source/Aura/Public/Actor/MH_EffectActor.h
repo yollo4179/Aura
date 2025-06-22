@@ -21,16 +21,14 @@ protected:
 
 
 public:
-	UFUNCTION()
-	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-	UFUNCTION()
-	void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	
+
+	void ApplayEffectToTarget(AActor* _pTarget, TSubclassOf <class UGameplayEffect> _EffectClass);
 
 private:
-	UPROPERTY(VisibleAnywhere, Category = "Properties")
-	TObjectPtr<class USphereComponent> m_pSphere = {};
 
-	UPROPERTY(VisibleAnywhere, Category = "Properties")
-	TObjectPtr<UStaticMeshComponent >m_pMeshComponent = {};
+	UPROPERTY(EditAnywhere, Category = "Applied Effects")
+	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
+
 
 };

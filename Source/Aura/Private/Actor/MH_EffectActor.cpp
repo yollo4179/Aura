@@ -1,5 +1,7 @@
 // copyright
 
+#include"AbilitySystemBlueprintLibrary.h"
+
 #include"AbilitySystem/MH_AttributeSet.h"
 #include"Player/AuraPlayerState.h"
 #include"Character/AuraCharacter.h"
@@ -11,10 +13,11 @@ AMH_EffectActor::AMH_EffectActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-	m_pMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Component"));
-	SetRootComponent(m_pMeshComponent);
-	m_pSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Component"));
-	m_pSphere->SetupAttachment(GetRootComponent());
+	
+	SetRootComponent(CreateDefaultSubobject<USceneComponent>("Root Scene"));//씬컴포넌트로 위치만 설정하고 나머지 부착은 디자이너한테 맡긴다.
+
+
+
 
 }
 
@@ -23,34 +26,33 @@ void AMH_EffectActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	/*Delegate Registelation*/
-	m_pSphere->OnComponentBeginOverlap.AddDynamic(this, &AMH_EffectActor::OnOverlapBegin);
-	m_pSphere->OnComponentEndOverlap.AddDynamic(this, &AMH_EffectActor::OnOverlapEnd);
+	
 }
 
 
-void AMH_EffectActor::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+
+
+void AMH_EffectActor::ApplayEffectToTarget(AActor* _pTarget, TSubclassOf<UGameplayEffect> _EffectClass)
 {
-	if (IAbilitySystemInterface* pAura = Cast<IAbilitySystemInterface>(OtherActor))
-	{
-		const UMH_AttributeSet* pAttributeSet = Cast<UMH_AttributeSet>(pAura->GetAbilitySystemComponent()->GetAttributeSet(UMH_AttributeSet::StaticClass()));
 
-		UMH_AttributeSet* pMutableAttributeSet = const_cast<UMH_AttributeSet*>(pAttributeSet);
-		//pMutableAttributeSet->SetHealth();
+	//Componrent 가져오기AttributeSet 가져오기 EffectContextHandle//가져오기-> 이펙스 스펙 핸들 가져오기 -> 적용함수 부르기 
 
-		float m_HealthDelta = 25.f; // Example value, you can set this to whatever you need
-		pMutableAttributeSet->SetHealth(pAttributeSet->GetHealth() + m_HealthDelta);
+	UAbilitySystemComponent* pTargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(_pTarget);//컴포넌트로 등록된 asc찾음
 
-
+	if (pTargetASC == nullptr) return;
 		
-		pMutableAttributeSet->SetMana(pAttributeSet->GetMana() + m_HealthDelta);
-		Destroy();
-	}
+	check(_EffectClass);// 이거는 무조건 설정해줘야함 블루프린트 사이드에서
+
+	FGameplayEffectContextHandle EffectContextHandle = pTargetASC->MakeEffectContext();
+	EffectContextHandle.AddSourceObject(this);//이펙트 컨텍스트에 소스 오브젝트로 나를 추가한다. (내가 이텍트 Causer이다) 
 
 
-}
-void AMH_EffectActor::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
+	FGameplayEffectSpecHandle EffectSpecHandle = pTargetASC->MakeOutgoingSpec(_EffectClass, 1.0f, EffectContextHandle);
+	//이펙트 스펙 핸들 생성 (레벨은 1.0f로 고정)// 이펙트 문맥을 설정한 후에 실제 이펙트에 접근할 수 있는 핸들을 생성한다.
+	//핸들은 Wrapper고 Data는 스마트포인터여서 가비지 컬렉션이 되지 않는다. 역참조로 Spec을 직접 접근할 수 있다 
+	
+	pTargetASC->ApplyGameplayEffectSpecToSelf(*(EffectSpecHandle.Data.Get()));
+
 
 }
 
