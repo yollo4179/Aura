@@ -22,7 +22,7 @@ protected:
 
 public:
 	
-	UFUNCTION(BlueprintCallable)
+
 	void ApplayEffectToTarget(AActor* _pTarget, TSubclassOf <class UGameplayEffect> _EffectClass);
 
 private:
