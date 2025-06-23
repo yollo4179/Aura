@@ -30,12 +30,16 @@ UOverlayWidgetController* AMH_HUD::GetOverlayWidgetController(const FWidgetContr
 
 void AMH_HUD::InitOverlayWidgetController(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS)
 {
+	
+	checkf(OverlayWidgetClass, TEXT("There's no Widget class plaease fill put HUD with BP_WidgetClass"));
+	checkf(OverlayWidgetControllerClass, TEXT("There's no Widget class plaease fill put HUD with BP_WidgetControllerClass"));
+
+
 	UUserWidget* Widget = CreateWidget<UMH_UserWidget>(GetWorld(), OverlayWidgetClass);
 
 	OverlayWidget = Cast<UMH_UserWidget>(Widget);
 
-	checkf(OverlayWidgetClass, TEXT("There's no Widget class plaease fill put HUD with BP_WidgetClass"));
-	checkf(OverlayWidgetControllerClass,TEXT("There's no Widget class plaease fill put HUD with BP_WidgetControllerClass"));
+	
 
 
 

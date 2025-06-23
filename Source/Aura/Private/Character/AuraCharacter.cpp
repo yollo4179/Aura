@@ -49,13 +49,12 @@ void AAuraCharacter::InitAbilityActorInfo()
 
 	/*Hud에 접근하기 위해서 PlayerController 를 가져온다 */
 
-
-	AAuraPlayerController* pController =Cast<AAuraPlayerController>(GetController());
-
-	if (pController)
+	if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
 	{
-		AMH_HUD* pHUD =Cast<AMH_HUD>(pController->GetHUD());
-
-		pHUD->InitOverlayWidgetController(pController,pPlayerState,m_pAbilitySystemComponent, m_pAttributeSet);
+		if (AMH_HUD* AuraHUD = Cast<AMH_HUD>(AuraPlayerController->GetHUD()))
+		{
+			AuraHUD->InitOverlayWidgetController(AuraPlayerController, pPlayerState, m_pAbilitySystemComponent, m_pAttributeSet);
+		}
 	}
+
 }
