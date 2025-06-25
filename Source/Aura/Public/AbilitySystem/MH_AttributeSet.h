@@ -2,10 +2,42 @@
 
 #pragma once
 #include"AbilitySystemComponent.h"
+#include "GameplayEffectExtension.h"
+
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
 #include "MH_AttributeSet.generated.h"
 
+
+USTRUCT()
+struct FEffectProperties
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	UAbilitySystemComponent* pSrcASC = {};
+	UPROPERTY()
+	AActor* pSrcAvatarActor = {};
+	UPROPERTY()
+	AController* pSrcController = {}; 
+	UPROPERTY()
+	ACharacter* pSrcCharacter = {}; 
+
+
+	UPROPERTY()
+	UAbilitySystemComponent* pTargetASC = {};
+	UPROPERTY()
+	AActor* pTargetAvatarActor = {};
+	UPROPERTY()
+	AController* pTargetController = {};
+	UPROPERTY()
+	ACharacter* pTargetCharacter = {};
+
+
+	UPROPERTY()
+	FGameplayEffectContextHandle EffectContextHandle = {};
+
+};
 
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
  	GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
@@ -23,7 +55,11 @@ public:
 	UMH_AttributeSet();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	UPROPERTY( BlueprintReadOnly,ReplicatedUsing =OnRep_Health ,Category="Vital Attributes")
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)override;
+
+
+	// 1. ReplicatedUsing로 레플리케이션 시에 호출될 콜백함수를 지정한다./ 변경시 호출
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Vital Attributes")
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UMH_AttributeSet, Health);
 
@@ -39,6 +75,7 @@ public:
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(UMH_AttributeSet, MaxMana);
 
+	//2. 네트워크를 통해 새로운 aTTRIBUTE 값이 도착하면 콜백함수를 선언한다. 
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& _OldHelth)const;
 	UFUNCTION()
@@ -47,5 +84,9 @@ public:
 	void OnRep_Mana(const FGameplayAttributeData& _OldMana) const;
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& _OldMaxMana)const;
-	
+
+
+private:
+	void SetEffectProperties(const  FGameplayEffectModCallbackData& Data, FEffectProperties& Prop);
+
 };

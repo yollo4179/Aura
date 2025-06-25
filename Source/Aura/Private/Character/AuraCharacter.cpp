@@ -1,9 +1,11 @@
 // copyright
+
+#include "Character/AuraCharacter.h"
 #include"Player/AuraPlayerController.h"
 #include"UI/HUD/MH_HUD.h"
 #include"Player/AuraPlayerState.h"
 #include"AbilitySystemComponent.h"
-#include "Character/AuraCharacter.h"
+#include"AbilitySystem/MH_AbilitySystemComponent.h"
 #include"GameFramework/CharacterMovementComponent.h"
 
 AAuraCharacter::AAuraCharacter()
@@ -39,10 +41,14 @@ void AAuraCharacter::OnRep_PlayerState()
 
 void AAuraCharacter::InitAbilityActorInfo()
 {
-
+	//BP에서 스테이트와 컨트롤로는 게임모드에 설정했으므로 거기서 가져옴
 	AAuraPlayerState* pPlayerState = GetPlayerState<AAuraPlayerState>();//State 만들어줌 
 	check(pPlayerState);
 	pPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(pPlayerState, this);//Player를 Controller가 자동으로 소유하도록 설정
+	
+	Cast<UMH_AbilitySystemComponent>(pPlayerState->GetAbilitySystemComponent())
+		->AbilityActorInfoSet();
+
 	m_pAbilitySystemComponent = pPlayerState->GetAbilitySystemComponent();
 	m_pAttributeSet = pPlayerState->GetAttributeSet();
 

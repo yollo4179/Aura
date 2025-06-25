@@ -143,7 +143,8 @@ protected:
 
 
 
-
+	UPROPERTY(EditAnywhere, Category ="GAS|Level")
+	float fEffectActorLevel = {};
 private:
 	/*For Map*/
 	UPROPERTY()

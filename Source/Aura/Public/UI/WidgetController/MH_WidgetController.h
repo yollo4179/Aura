@@ -57,6 +57,9 @@ public:
 
 	virtual void BroadcastInitialValues();
 	virtual void BindCallbacksToDependencies();
+	const UAbilitySystemComponent* GetAbilitySystemComponent();
+
+
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Widget Controller")

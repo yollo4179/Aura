@@ -22,11 +22,16 @@ protected:
 
 
 public:
+	
+
+
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UObject> WidgetController;
 
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetController(UObject* InWidgetController);
+
+	
 
 	
 };

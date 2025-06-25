@@ -24,3 +24,7 @@ void UMH_WidgetController::BroadcastInitialValues()
 void UMH_WidgetController::BindCallbacksToDependencies()
 {
 }
+const UAbilitySystemComponent* UMH_WidgetController::GetAbilitySystemComponent()
+{
+	return AbilitySystemComponent; 
+}

@@ -1,5 +1,6 @@
 // copyright
 
+#include"AbilitySystem/MH_AbilitySystemComponent.h"
 
 #include "Character/EnemyCharacter.h"
 #include"AttributeSet.h"
@@ -12,7 +13,7 @@ AEnemyCharacter::AEnemyCharacter()
 
 
 	
-	m_pAbilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>("Ability System Component");
+	m_pAbilitySystemComponent = CreateDefaultSubobject<UMH_AbilitySystemComponent>("Ability System Component");
 	m_pAbilitySystemComponent->SetIsReplicated(true); // Enable replication for the ability system component
 	m_pAbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);// 표 참조하기
 
@@ -44,6 +45,14 @@ void AEnemyCharacter::HighlightActor()
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	InitAbilityActorInfo();
+	
+}
 
+void AEnemyCharacter::InitAbilityActorInfo()
+{
 	m_pAbilitySystemComponent->InitAbilityActorInfo(this, this);
+
+	Cast<UMH_AbilitySystemComponent>(m_pAbilitySystemComponent)
+		->AbilityActorInfoSet();
 }

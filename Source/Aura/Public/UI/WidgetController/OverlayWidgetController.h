@@ -7,10 +7,23 @@
 #include "UI/WidgetController/MH_WidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignature, float, NewHelath);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealthChangedSignature, float, NewMaxHelath);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnManaChangedSignature, float, NewMana);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxManaChangedSignature, float, NewMaxMana);
+
+USTRUCT(BlueprintType)
+struct FUIWidgetTableRow :public FTableRowBase //Drop아이템의 DT의 로우 스키마 
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FGameplayTag MessageTag = FGameplayTag();//SrcTag; 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FText ExplainMassage = FText();
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) //CreateWidget 할때 필요함 
+	TSubclassOf<class UMH_UserWidget>MessgeWidgetClass = {};
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) //CreateWidget 할때 필요함 
+	UTexture2D* Image = nullptr; 
+};
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMessageWidgetRowDelegate, FUIWidgetTableRow, TagRow);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeValueChangedSignature, float, NewAttributeValue);
 /**
  * 
  */
@@ -24,25 +37,36 @@ public:
 	
 	virtual void BroadcastInitialValues() override;
 	virtual void BindCallbacksToDependencies()override;
-	void HealthChanged(const FOnAttributeChangeData& Data);
-	void MaxHealthChanged(const FOnAttributeChangeData& Data);
-	void ManaChanged(const FOnAttributeChangeData& Data);
-	void MaxManaChanged(const FOnAttributeChangeData& Data);
 
 
-	UPROPERTY(BlueprintAssignable,Category ="Gas|Attributes")
-	FOnHealthChangedSignature OnHealthChanged;
+
+	UPROPERTY(BlueprintAssignable,Category ="Gas|Attributes")//브로드 캐스트로 값 전달
+	FOnAttributeValueChangedSignature OnHealthChanged;
 
 	UPROPERTY(BlueprintAssignable, Category = "Gas|Attributes")
-	FOnMaxHealthChangedSignature OnMaxHealthChanged;
+	FOnAttributeValueChangedSignature OnMaxHealthChanged;
 	
 	UPROPERTY(BlueprintAssignable, Category = "Gas|Attributes")
-	FOnManaChangedSignature OnManaChanged;
+	FOnAttributeValueChangedSignature OnManaChanged;
 
 	UPROPERTY(BlueprintAssignable, Category = "Gas|Attributes")
-	FOnMaxManaChangedSignature OnMaxManaChanged;
+	FOnAttributeValueChangedSignature OnMaxManaChanged;
 
+	UPROPERTY(BlueprintAssignable, Category = "Gas|Attributes")
+	FOnMessageWidgetRowDelegate MessageWidgetRowDelegate;
 
+	//테이블의  스키마를 내맘대로 세팅하기위한 포인터 
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "WidgetData")
+	TObjectPtr<UDataTable> pMessageWidgetDT = {};
 
+	template<typename T>
+	T* GetUIWidgetTableRowByTag(const UDataTable* pTable , const FGameplayTag& Tag );
 	
 };
+
+template<typename T>
+inline T* UOverlayWidgetController::GetUIWidgetTableRowByTag(const UDataTable* pTable, const FGameplayTag& Tag)
+{
+	 return pTable->FindRow<T>(Tag.GetTagName(), TEXT(""));
+}
