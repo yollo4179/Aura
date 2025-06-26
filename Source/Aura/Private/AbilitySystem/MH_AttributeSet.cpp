@@ -13,6 +13,7 @@ UMH_AttributeSet::UMH_AttributeSet()
 	InitMaxHealth(100.f);
 	InitMana(10.f);
 	InitMaxMana(100.f);
+
 }
 
 //4. 네트워크 동기화를 위해서 속성 복제를 설정하는 함수
@@ -29,6 +30,7 @@ void UMH_AttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME_CONDITION_NOTIFY(UMH_AttributeSet, Mana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UMH_AttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
 	
+	
 
 }
 
@@ -40,11 +42,35 @@ void UMH_AttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 	FEffectProperties SrcProperties= {};
 	SetEffectProperties(Data, SrcProperties);
 
+	if (GetHealthAttribute() == Data.EvaluatedData.Attribute)
+	{
+		SetHealth( FMath::Clamp(GetHealth(),0,GetMaxHealth()));
+	}
 
-	
-	
-
+	if (GetManaAttribute() == Data.EvaluatedData.Attribute)
+	{
+		SetMana(FMath::Clamp(GetMana(), 0, GetMaxMana()));
+	}
 }
+//Attribute 가 바뀌기만 하면 불리는 함수 혹은 이펙트 연산 후에 게임플레이 이펙트로부터 호출된다. modifier 가 결과리턴 
+// // modifier 의 쿼링한 결과에서 수정하는것 -> post에서 이펙트 실행 후에 적용하는것이 적법하다.
+void UMH_AttributeSet::PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const {
+
+
+	Super::PreAttributeBaseChange(Attribute, NewValue);
+
+		if (Attribute == GetHealthAttribute())
+		{
+			NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());//ALFL 미리 클램프
+		
+		}
+		if (Attribute == GetManaAttribute())
+		{
+			NewValue = FMath::Clamp(NewValue, 0.f, GetMaxMana());
+		}
+
+	
+};
 
 
 void UMH_AttributeSet::OnRep_Health(const FGameplayAttributeData& _OldHelth) const

@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
+
 /**
  * 
  */
@@ -18,6 +19,7 @@ public:
 protected:
 	void BeginPlay()override;
 	void SetupInputComponent()override;
+	void CheckIfVitalInfoChanged();
 public:
 	virtual void PlayerTick(float DeltaTime)override;
 	void CursorTrace();
@@ -32,6 +34,7 @@ private:
 	class IEnemyInterface* ThisActor = {};
 	 IEnemyInterface* LastActor = {};
 	void Move(const struct FInputActionValue& InputActionValue);
+
 
 
 

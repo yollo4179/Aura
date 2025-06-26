@@ -57,6 +57,9 @@ public:
 
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)override;
 
+	virtual  void PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const override;
+
+	
 
 	// 1. ReplicatedUsing로 레플리케이션 시에 호출될 콜백함수를 지정한다./ 변경시 호출
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Vital Attributes")
@@ -67,13 +70,17 @@ public:
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UMH_AttributeSet, MaxHealth);
 
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Mana, Category = "Mana Attributes")
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Mana, Category = "Vital Attributes")
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UMH_AttributeSet, Mana);
 
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxMana, Category = "Mana Attributes")
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxMana, Category = "Vital Attributes")
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(UMH_AttributeSet, MaxMana);
+
+
+
+
 
 	//2. 네트워크를 통해 새로운 aTTRIBUTE 값이 도착하면 콜백함수를 선언한다. 
 	UFUNCTION()
@@ -84,6 +91,8 @@ public:
 	void OnRep_Mana(const FGameplayAttributeData& _OldMana) const;
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& _OldMaxMana)const;
+
+
 
 
 private:

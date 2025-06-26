@@ -55,10 +55,14 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Gas|Attributes")
 	FOnMessageWidgetRowDelegate MessageWidgetRowDelegate;
 
+	
+
 	//테이블의  스키마를 내맘대로 세팅하기위한 포인터 
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "WidgetData")
 	TObjectPtr<UDataTable> pMessageWidgetDT = {};
+
+	
 
 	template<typename T>
 	T* GetUIWidgetTableRowByTag(const UDataTable* pTable , const FGameplayTag& Tag );

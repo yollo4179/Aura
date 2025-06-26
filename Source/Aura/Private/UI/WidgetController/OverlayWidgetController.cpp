@@ -33,7 +33,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 		AuraAttributeSet->GetHealthAttribute())//델리게이트에 등록할 어트리뷰트
-		.AddLambda([this](const FOnAttributeChangeData& Data) {OnHealthChanged.Broadcast(Data.NewValue);});//이 이벤트 호출해서 블루프린트에 알린다 값 전달});
+		.AddLambda([this](const FOnAttributeChangeData& Data){OnHealthChanged.Broadcast(Data.NewValue);});//이 이벤트 호출해서 블루프린트에 알린다 값 전달});
 	//AddUObject(this, &UOverlayWidgetController::HealthChanged);// 델리게이트 조건에 만족할 때 호출할 함수 컬벡 말고 람다로 해도됨
 	
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
@@ -47,6 +47,12 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
 		AuraAttributeSet->GetMaxManaAttribute())
 		.AddLambda([this](const FOnAttributeChangeData& Data) {OnMaxManaChanged.Broadcast(Data.NewValue); });
+
+
+
+	
+
+
 
 	UMH_AbilitySystemComponent* CustomASC = Cast<UMH_AbilitySystemComponent>(AbilitySystemComponent);
 	CustomASC->OnEffectAssetTagDelegate.AddLambda(
@@ -68,12 +74,12 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 				GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Blue, Msg);*/
 
 			}
-			
-			
-			
 		}
 	
 	);
+
+
+
 
 	
 }
