@@ -1,8 +1,7 @@
 // copyright
 
-#include"AbilitySystem/MH_AbilitySystemComponent.h"
-
 #include "Character/EnemyCharacter.h"
+#include"AbilitySystem/MH_AbilitySystemComponent.h"
 #include"AttributeSet.h"
 #include"AbilitySystemComponent.h"
 

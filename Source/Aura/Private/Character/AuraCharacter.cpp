@@ -62,5 +62,13 @@ void AAuraCharacter::InitAbilityActorInfo()
 			AuraHUD->InitOverlayWidgetController(AuraPlayerController, pPlayerState, m_pAbilitySystemComponent, m_pAttributeSet);
 		}
 	}
-
+	InitDefaultAttributes();
 }
+int32 AAuraCharacter::GetCharacterLevel()
+{
+	AAuraPlayerState* pPlayerState = GetPlayerState<AAuraPlayerState>();
+	check(pPlayerState);
+	int32 Level = pPlayerState->GetCharacterLevel();
+	return Level; 
+
+};
