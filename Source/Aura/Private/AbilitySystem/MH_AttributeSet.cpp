@@ -8,7 +8,7 @@
 
 UMH_AttributeSet::UMH_AttributeSet()
 {
-
+	this;
 	//생성자에서 애트리뷰트를 초기화 하는 것은 우너하는것이 아님
 	InitHealth(10);
 	InitMana(10.f);
@@ -47,8 +47,7 @@ void UMH_AttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out
 	DOREPLIFETIME_CONDITION_NOTIFY(UMH_AttributeSet, ManaRegeneration, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UMH_AttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UMH_AttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UMH_AttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UMH_AttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
+	
 #pragma endregion
 
 	//각 속성의 네트워크 복제를 설정 //이 속성들은 항상 네트워크에 복제, 값 변경 시 통지 발생
@@ -83,7 +82,7 @@ void UMH_AttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 // // modifier 의 쿼링한 결과에서 수정하는것 -> post에서 이펙트 실행 후에 적용하는것이 적법하다.
 void UMH_AttributeSet::PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const {
 
-
+	this;
 	Super::PreAttributeBaseChange(Attribute, NewValue);
 
 		//if (Attribute == GetHealthAttribute())

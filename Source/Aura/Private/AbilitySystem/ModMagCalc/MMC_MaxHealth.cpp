@@ -26,6 +26,7 @@ UMMC_MaxHealth::UMMC_MaxHealth()
 
 float UMMC_MaxHealth::CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const
 {
+	Super::CalculateBaseMagnitude_Implementation(Spec);
 	//SorceTag¶û TargetTag °¡Á®¿È ¼³Á¤ÇÑ
 
 	FAggregatorEvaluateParameters EvalParams;

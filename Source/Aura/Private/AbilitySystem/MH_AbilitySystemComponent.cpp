@@ -2,7 +2,7 @@
 
 
 #include "AbilitySystem/MH_AbilitySystemComponent.h"
-
+#include"Managers/TagManager.h"
 void UMH_AbilitySystemComponent::AbilityActorInfoSet()
 {
 
@@ -10,6 +10,14 @@ void UMH_AbilitySystemComponent::AbilityActorInfoSet()
 	// Delegate Binding같은 적업을  ASC 에서 세팅할 수 있다( 공통작업들) 
 
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UMH_AbilitySystemComponent::EffectApplied);//이 ASC에 료과가 적용될때마다  effectApplied 함수가 호출
+	const FGameplayTag& pTag = CTagManager::Get().GetTag(FName("Attributes.Secondary.Armor"));
+	GEngine->AddOnScreenDebugMessage(
+		-1,
+		10.f,
+		FColor::Orange,
+		FString::Printf(TEXT("Tag :%s"), *(pTag.ToString()))
+	);
+
 }
 
 

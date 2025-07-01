@@ -54,8 +54,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetComtrollerParams(const FWidgetControllerParams& Params);
 
-
+	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitialValues();
+
 	virtual void BindCallbacksToDependencies();
 	const UAbilitySystemComponent* GetAbilitySystemComponent();
 

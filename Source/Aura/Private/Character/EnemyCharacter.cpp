@@ -16,7 +16,7 @@ AEnemyCharacter::AEnemyCharacter()
 	m_pAbilitySystemComponent->SetIsReplicated(true); // Enable replication for the ability system component
 	m_pAbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);// 표 참조하기
 
-	m_pAttributeSet = CreateDefaultSubobject<UAttributeSet>("Attribute Set");
+	m_pAttributeSet = CreateDefaultSubobject<UAttributeSet>("Attribute Set Enemy");
 }
 
 void AEnemyCharacter::UnHighlightActor()

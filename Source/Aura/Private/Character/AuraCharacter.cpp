@@ -52,7 +52,7 @@ void AAuraCharacter::InitAbilityActorInfo()
 	m_pAbilitySystemComponent = pPlayerState->GetAbilitySystemComponent();
 	m_pAttributeSet = pPlayerState->GetAttributeSet();
 
-
+	InitDefaultAttributes();
 	/*Hud에 접근하기 위해서 PlayerController 를 가져온다 */
 
 	if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
@@ -62,7 +62,7 @@ void AAuraCharacter::InitAbilityActorInfo()
 			AuraHUD->InitOverlayWidgetController(AuraPlayerController, pPlayerState, m_pAbilitySystemComponent, m_pAttributeSet);
 		}
 	}
-	InitDefaultAttributes();
+
 }
 int32 AAuraCharacter::GetCharacterLevel()
 {

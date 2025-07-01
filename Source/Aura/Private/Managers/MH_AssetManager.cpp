@@ -3,16 +3,20 @@
 
 #include "Managers/MH_AssetManager.h"
 #include"Managers/TagManager.h"
-CAssetManager& CAssetManager::Get()
+
+UCAssetManager& UCAssetManager::Get()
 {
 	check(GEngine);
-	CAssetManager* AssetManager = Cast<CAssetManager>(GEngine->AssetManager);
+	UCAssetManager* AssetManager = Cast<UCAssetManager>(GEngine->AssetManager);
 	return (*AssetManager);
+
+	
 }
-void CAssetManager::StartInitialLoading()
+void UCAssetManager::StartInitialLoading()
 {
 	Super::StartInitialLoading();
 
 	CTagManager::InitializeNativeGameplayTags();
 
+	
 }

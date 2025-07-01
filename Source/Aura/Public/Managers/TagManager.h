@@ -1,5 +1,4 @@
 // copyright
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -9,14 +8,22 @@
  */
 class AURA_API CTagManager
 {
+	#define TAGMAP	TMap<FName, FGameplayTag>
 public:
-	const static CTagManager& Get() { return m_TagManager; };
+	static CTagManager& Get() { return m_TagManager; };
 
 	static void InitializeNativeGameplayTags();
+
+	
+	void AddTag(const FName& Key, const FString& Value);
+	const FGameplayTag& GetTag(const FName& Key);
 protected:
 
 private:
-	FGameplayTag m_SecondaryAttributeArmorTag;
+	
+	void InitSecondaryTags();
+	void InitPrimaryTags();
 	static CTagManager m_TagManager;
-
+	TAGMAP m_GameplayTags;
+	
 };
